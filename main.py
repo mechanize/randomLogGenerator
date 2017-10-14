@@ -2,6 +2,10 @@
 import subprocess
 import randomLogGenerator
 
+formulas = ["CustWithInjEvents.formula", "CustWithoutInjEvents.formula"]
+NUM_LOGS = 100
+data = []
+
 
 def run(formula, signature, log):
     console_in = ["monpoly", "-sig", signature, "-formula", formula, "-log", log, "-negate"]
@@ -19,6 +23,17 @@ def run(formula, signature, log):
     return time, mem
 
 randomLogGenerator.create_logs()
+
+for f in formulas:
+    plot_data = []
+    for k in range(NUM_LOGS):
+        t, m = run(formula=f, signature="stockscan.signature", log="logs/" + str(k) + ".log")
+        plot_data.append([k, t, m])
+    data.append(plot_data)
+
+
+
+
 
 
 
