@@ -11,11 +11,12 @@ PRINT = "echo \"Time_elapsed: $tt\""
 formulas = ["CustWithInjEvents.formula", "CustWithoutInjEvents.formula"]
 SIGNATURE = "stockscan.sign"
 CONFIG = "config.txt"
-NUM_LOGS = 100
+NUM_LOGS = randomLogGenerator.read_config(CONFIG)["NUM_LOGS"]
 data = []
 
 
 def run(formula, signature, log):
+    # type: (str, str, str) -> (int, int)
     console_in = [DATE_1, ";", TIME, MONPOLY, "-sig", signature, "-formula", formula, "-log", log, "-negate", ";", DATE_2, ";", PRINT]
     console_out = subprocess.Popen(console_in, False)
     lines = console_out.stdout.split("\n")

@@ -9,6 +9,7 @@ MAX_VAULT_NO = 20
 
 
 def read_config(file_loc):
+    # type: (str) -> dict
     config = {"NUM_LOGS": 0,
               "MAX_TIMESTAMP": 0,
               "EVENT_RATE": 0,
@@ -39,9 +40,13 @@ def write_config(config, file_loc):
 def create_log(config, log_file):
     fo = open(log_file, 'w')
     timestamp = 1
+    counter = 0
     fo.write("@" + str(timestamp))
     for i in range(config["MAX_TIMESTAMP"]):
-        timestamp += int(randint(1, config["AVG_EVENT_DENSITY"])/config["AVG_EVENT_DENSITY"])
+        counter += 1
+        if counter == config["EVENT_RATE"]:
+            timestamp += 1
+            counter = 0
         amount = randint(1, MAX_AMOUNT)
         shape_no = randint(1, len(shape_weights))
         fo.write("@" + str(timestamp) + " " +
@@ -62,7 +67,10 @@ def create_logs():
     else:
         log_append = 0  # TODO
     for log_no in range(log_append, config_data["NUM_LOGS"] + log_append):
+        if config_data["INCREASING_EVENT_RATE"]:
+            config_data["EVENT_RATE"] += 1
         create_log(config_data, "logs/" + str(log_no) + ".log")
+    return
 
 
 create_logs()
