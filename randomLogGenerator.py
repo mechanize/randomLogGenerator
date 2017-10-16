@@ -10,30 +10,37 @@ MAX_VAULT_NO = 20
 
 def read_config(file_loc):
     config = {"NUM_LOGS": 0,
-              "MIN_LOG_LENGTH": 0,
-              "MAX_LOG_LENGTH": 0,
-              "AVG_EVENT_DENSITY": 1,
+              "MAX_TIMESTAMP": 0,
+              "EVENT_RATE": 0,
+              "INCREASING_EVENT_RATE": 0,
               "OVERWRITE_LOGS": 1,  # bool
               "OUTSIDE_WORKING_HOURS_VIOLATION": 0,  # bool
               "NEGATIVE_AMOUNT_VIOLATION": 0}  # bool
     fo = open(file_loc, 'r')
     for line in fo.readlines():
         data = line.strip().split("=")
-        if data[0].strip() in config or data[0].strip == "":
+        if data[0].strip() in config:
             config[data[0].strip()] = int(data[1].strip())
+        elif data[0] == "":
+            pass
         else:
             print('No setting named \"' + data[0].strip() + '\"')
     fo.close()
     return config
 
 
+def write_config(config, file_loc):
+    fo = open(file_loc, "w")
+    for key in config.keys():
+        fo.write(key + " = " + str(config[key]))
+    return
+
+
 def create_log(config, log_file):
     fo = open(log_file, 'w')
     timestamp = 1
     fo.write("@" + str(timestamp))
-    log_length = randint(config.get("MIN_LOG_LENGTH"), config.get("MAX_LOG_LENGTH"))
-    for i in range(log_length):
-        # increment with prob 1/AVG_EVENT_DENSITY
+    for i in range(config["MAX_TIMESTAMP"]):
         timestamp += int(randint(1, config["AVG_EVENT_DENSITY"])/config["AVG_EVENT_DENSITY"])
         amount = randint(1, MAX_AMOUNT)
         shape_no = randint(1, len(shape_weights))

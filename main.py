@@ -10,6 +10,7 @@ PRINT = "echo \"Time_elapsed: $tt\""
 
 formulas = ["CustWithInjEvents.formula", "CustWithoutInjEvents.formula"]
 SIGNATURE = "stockscan.sign"
+CONFIG = "config.txt"
 NUM_LOGS = 100
 data = []
 
@@ -28,6 +29,7 @@ def run(formula, signature, log):
     if time == 0 or mem == 0:
         raise RuntimeError("Couldn't parse arguments")
     return time, mem
+
 
 randomLogGenerator.create_logs()
 
