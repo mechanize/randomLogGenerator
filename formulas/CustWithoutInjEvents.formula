@@ -1,0 +1,4 @@
+(EXISTS i,j,t,u. (tpts(i,t) AND (t <= 20) AND
+(NEXT[0,10] tpts(j,u) AND (u > 20))))
+IMPLIES
+((k <- SUM w ONCE[0,10] in(t,w,q,s,01) AND tpts(i,j) AND j >= 10) IMPLIES k = 3000)

@@ -1,0 +1,2 @@
+(EXISTS i,u. (tpts(i, u) AND ((u + 21599) MOD 86400) >= 43199))
+OR (NOT (EXISTS t,w,q,s,c. (in(t,w,q,s,c) OR out(t,w,q,s,c)))) 

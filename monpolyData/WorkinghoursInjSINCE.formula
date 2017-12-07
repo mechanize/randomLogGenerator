@@ -1,0 +1,3 @@
+(in(t,w,q,s,v) IMPLIES ((NOT close()) SINCE open()))
+AND
+(out(t,w,q,s,v) IMPLIES ((NOT close()) SINCE open()))

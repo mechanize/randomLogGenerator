@@ -1,0 +1,1 @@
+open() IMPLIES (NOT (EXISTS t,w,q,s,v. (in(t,w,q,s,v) OR out(t,w,q,s,v))) SINCE close())
