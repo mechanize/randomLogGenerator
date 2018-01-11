@@ -121,13 +121,13 @@ def create_short_entry(m_type: str, file, timestamp: int, **param):
                     param.get('signature') + "(" +
                     {
                         'cust': param.get('value')
-                    }.get(param.get('signature'), "") + ")\n" + "bla",
+                    }.get(param.get('signature'), "") + ")\n",
         'stream':   str(timestamp) + ", " +
                     {
                         'open':     '1',
                         'close':    '0',
                         'cust':     param.get('value')
-                    }.get(param.get('signature'))
+                    }.get(param.get('signature')) + "\n"
     }.get(m_type, ""))
 
 
