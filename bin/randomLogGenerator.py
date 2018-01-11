@@ -25,14 +25,14 @@ def create_log(config: dict, log_file: str) -> None:
             timestamp += 1
             counter = 0
         if timestamp == (config["MAX_TIMESTAMP"]/2 + 1) and not event_inj:
-            fo.write("@" + str(config["MAX_TIMESTAMP"]/2) + "cust(1)")
+            fo.write("@" + str(config["MAX_TIMESTAMP"]/2) + "cust(1)\n")
             event_inj = 1
         if config["INJ_WORKING_HOURS"] and last_timestamp != timestamp:
             if isopen:
-                fo.write("@" + str(timestamp) + " open()")
+                fo.write("@" + str(timestamp) + " open()\n")
                 isopen = False
             else:
-                fo.write("@" + str(timestamp) + " close()")
+                fo.write("@" + str(timestamp) + " close()\n")
                 isopen = True
         amount = randint(1, MAX_AMOUNT)
         shape_no = randint(1, len(shape_weights))
