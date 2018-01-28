@@ -1,9 +1,0 @@
-@0 open()
-@1 in(Aluminum, 13, 1, 2, 4)
-@1 in(Aluminum, 8, 2, 1, 4)
-@2 close()
-@3 in(asd, 4, 6, 1, 2)
-@4 open()
-@4 out(Aluminum, 10, 1, 1, 5)
-@5 out(Aluminum, 8, 2, 4, 2)
-@100

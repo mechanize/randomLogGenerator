@@ -16,7 +16,8 @@ def create_logs(config: dict) -> None:
     # Also handles increasing event rate.
     config["EVENT_RATE"] = config["STARTING_EVENT_RATE"]
     shutil.rmtree("logs")
-    os.makedirs("logs")
+    os.makedirs("logs/monpoly")
+    os.makedirs("logs/stream")
     for log_num in range(0, config["NUM_LOGS"]):
         create_log(config, log_num)
         if config["INCREASING_EVENT_RATE"]:
@@ -30,27 +31,27 @@ def create_log(config: dict, log_num: int) -> None:
     # The logs for different tools have identical information.
 
     # Monpoly
-    f_monpoly = open("logs/monpoly/" + str(log_num) + ".log")
-    f_monpoly.write("@0")
+    f_monpoly = open("logs/monpoly/" + str(log_num) + ".log", 'w+')
+    f_monpoly.write("@0 \n")
 
     # Stream
-    f_stream_in = open("logs/stream/" + str(log_num) + "_in.dat")
-    f_stream_in.write("i, str, i, i, i, i")
-    f_stream_out = open("logs/stream/" + str(log_num) + "_out.dat")
-    f_stream_out.write("i, str, i, i, i, i")
-    f_stream_isopen = open("logs/stream/" + str(log_num) + "_isopen.dat")
-    f_stream_isopen.write("i, i")
-    f_stream_cust = open("logs/stream/" + str(log_num) + "_cust.dat")
-    f_stream_cust.write("i, i")
+    f_stream_in = open("logs/stream/" + str(log_num) + "_in.dat", 'w+')
+    f_stream_in.write("i,c16,i,i,i,i\n")
+    f_stream_out = open("logs/stream/" + str(log_num) + "_out.dat", 'w+')
+    f_stream_out.write("i,c16,i,i,i,i\n")
+    f_stream_isopen = open("logs/stream/" + str(log_num) + "_isopen.dat", 'w+')
+    f_stream_isopen.write("i,i\n")
+    f_stream_cust = open("logs/stream/" + str(log_num) + "_cust.dat", 'w+')
+    f_stream_cust.write("i,i,i,i\n")
 
     # Loop init
     timestamp = 1
     counter = 0
     event_inj = False
+    isopen = True
 
     for i in range(config["MAX_TIMESTAMP"]*config["EVENT_RATE"] - 1):
         counter += 1
-        isopen = True
         last_timestamp = timestamp
 
         # Events per timestamp
@@ -88,7 +89,11 @@ def create_log(config: dict, log_num: int) -> None:
                      material, weight, quantity, shape, vault_num)
 
     # Cleanup
-    f_monpoly.write("@1000")
+    f_monpoly.write("@1000 ")
+    f_stream_in.write("1000,Bla,0,0,0,0")
+    f_stream_out.write("1000,Bla,0,0,0,0")
+    f_stream_isopen.write("1000,0")
+    f_stream_cust.write("1000,0,0,0")
     for file in [f_monpoly, f_stream_out, f_stream_in, f_stream_isopen, f_stream_cust]:
         file.close()
     return
@@ -100,16 +105,16 @@ def create_entry(m_type: str, file, timestamp: int, signature: str, material: st
     file.write({
         'monpoly':  "@" + str(timestamp) + " " +
                     signature + "(" +
-                    material + " ," +
-                    str(quantity) + " ," +
-                    str(weight) + " ," +
-                    str(shape) + " ," +
+                    material + ", " +
+                    str(weight) + ", " +
+                    str(quantity) + ", " +
+                    str(shape) + ", " +
                     str(vault_num) + ")\n",
-        'stream':   str(timestamp) + ", " +
-                    material + " ," +
-                    str(quantity) + " ," +
-                    str(weight) + " ," +
-                    str(shape) + " ," +
+        'stream':   str(timestamp) + "," +
+                    material + "," +
+                    str(weight) + "," +
+                    str(quantity) + "," +
+                    str(shape) + "," +
                     str(vault_num) + "\n"
     }.get(m_type, ""))
 
@@ -120,13 +125,13 @@ def create_short_entry(m_type: str, file, timestamp: int, **param):
         'monpoly':  "@" + str(timestamp) + " " +
                     param.get('signature') + "(" +
                     {
-                        'cust': param.get('value')
+                        'cust': str(param.get('value'))
                     }.get(param.get('signature'), "") + ")\n",
-        'stream':   str(timestamp) + ", " +
+        'stream':   str(timestamp) + "," +
                     {
                         'open':     '1',
                         'close':    '0',
-                        'cust':     param.get('value')
+                        'cust':     "1," + str(param.get('value')) + ",3000"
                     }.get(param.get('signature')) + "\n"
     }.get(m_type, ""))
 

@@ -1,0 +1,6 @@
+monpoly = ~/Documents/Bachelorthesis/2017-jager-survey/monpoly/monpoly
+monpoly_signature = static/stockscan.sign
+stream = ~/Documents/Bachelorthesis/stream/stream/bin/gen_client
+stream_config = static/config
+time_loc = /usr/bin/time -v
+config = config.txt

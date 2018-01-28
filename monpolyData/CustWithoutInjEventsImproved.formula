@@ -1,7 +1,0 @@
-(EXISTS i. tpts(i,100))
-IMPLIES
-((k <- SUM w ONCE EXISTS i,j. in(t,w,q,s,01) AND tpts(i,j) AND j >= 10 AND j <= 20)
-IMPLIES
-k < 0)
-
-

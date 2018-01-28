@@ -1,3 +1,0 @@
-cust(i)
-IMPLIES
-((k <- SUM w ONCE[0,10] in(t,w,q,s,01) AND tpts(i,j)) IMPLIES k = 3000) 
