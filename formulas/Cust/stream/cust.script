@@ -1,0 +1,9 @@
+table: register stream in(type char(16), weight integer, quantity integer, shape integer, vault_no integer);
+source: logs/stream/4_in.dat
+table: register stream cust(id integer, vault_no integer, weight integer);
+source: logs/stream/4_cust.dat
+vquery: select cust.id, cust.vault_no, cust.weight, sum(in.weight) from cust[Now], in[Range 10] where cust.vault_no = in.vault_no group by cust.id, cust.vault_no, cust.weight;
+vtable: register relation s(id integer, vault_no integer, tot_weight integer, weight integer);
+query: Istream(select vault_no, weight from s where s.weight <> s.tot_weight);
+dest: cust_out
+
