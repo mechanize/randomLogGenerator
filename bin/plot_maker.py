@@ -7,18 +7,18 @@ def makeplot(data: dict, event_rate: [int], date: str) -> None:
     ax1 = fig.add_subplot(222)
     ax2 = fig.add_subplot(223)
     ax3 = fig.add_subplot(224)
-    for dic in data.get('Workinghours'):
-        ax0.plot(event_rate, dic.get('time'), label=dic.get('label'))
-        ax1.plot(event_rate, dic.get('mem'))
-    for dic in data.get('Cust'):
-        ax2.plot(event_rate, dic.get('time'), label=dic.get('label'))
-        ax3.plot(event_rate, dic.get('mem'))
+    for label, dic in list(data.get('Workinghours').items()):
+        ax0.plot(event_rate, [sum(e)/len(e) for e in dic.get('time')], label=label)
+        ax1.plot(event_rate, [sum(e)/len(e) for e in dic.get('mem')])
+    for label, dic in list(data.get('Cust').items()):
+        ax2.plot(event_rate, [sum(e)/len(e) for e in dic.get('time')], label=label)
+        ax3.plot(event_rate, [sum(e)/len(e) for e in dic.get('mem')])
 
-    ax0.set_ylabel(u"Time in ms")
+    ax0.set_ylabel("Time in ms")
     ax0.set_xlabel("Event rate")
     ax1.set_ylabel("Memory in kB")
     ax1.set_xlabel("Event rate")
-    ax2.set_ylabel(u"Time in ms")
+    ax2.set_ylabel("Time in ms")
     ax2.set_xlabel("Event rate")
     ax3.set_ylabel("Memory in kB")
     ax3.set_xlabel("Event rate")

@@ -2,30 +2,28 @@ from shutil import move
 from os import remove, listdir, path
 
 
-def stream_set_src(src: str, params: [str]) -> None:
+def stream_src_copy(src: str, copy_loc: str, dest: str, params: [str]) -> None:
     src_temp = '/'.join(src.split('/')[:-1] + ["temp.dat"])  # creates a tmp file at the same location as src
     f_src = open(src, 'r')
-    f_temp = open(src_temp, 'w+')
+    f_dest = open(copy_loc, 'w+')
     i = 0
     for line in f_src.readlines():
-        if line.startswith("source") and len(params) > i:
-            f_temp.write("source: " + params[i] + "\n")
+        if line.startswith("dest"):
+            f_dest.write("dest: " + dest + "\n")
+        elif line.startswith("source") and len(params) > i:
+            f_dest.write("source: " + params[i] + "\n")
             i += 1
         else:
-            f_temp.write(line)
-    f_temp.close()
+            f_dest.write(line)
+    f_dest.close()
     f_src.close()
     remove(src)
     move(src_temp, src)
 
-
-def stream_get_dest(src: str) -> str:
-    f_src = open(src, 'r')
-    dest = ""
-    for line in f_src.readlines():
-        if line.startswith("dest"):
-            dest = line.split(":")[-1].strip()
-    return dest
+def stream_get_logs(tool: str, lognum: str) -> [str]:
+    return {
+        "Cust": [""]
+    }
 
 
 def read_config(file_loc: str) -> dict:
@@ -71,7 +69,7 @@ def parse_formulas() -> [dict]:
             for formula in formulas]
 
 
-def create_log_name(tool: str, formula: str, num: int) -> [str]:
+def create_log_names(tool: str, formula: str, num: int) -> [str]:
     return {
         'monpoly': ["logs/monpoly/" + str(num) + ".log"],
         'stream': {
